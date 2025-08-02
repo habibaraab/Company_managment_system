@@ -1,21 +1,34 @@
 package com.spring.Company.Services;
 
 
-import com.spring.Company.DTO.UserProjection;
 import com.spring.Company.Model.User;
+import com.spring.Company.Model.UserHistory;
+import com.spring.Company.Repo.UserHistoryRepository;
 import com.spring.Company.Repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ManagerService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserHistoryRepository userHistoryRepository;
+
     public User findUserById(int id){
         return userRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("User not found"));
     }
+
+    public     List<UserHistory> getUserHistory(int id){
+        return userHistoryRepository.getUserHistoryById(id);
+    }
+
+
+
 
     public void addUser(User user){
         if(userRepository.existsById(user.getId())) {

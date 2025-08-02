@@ -1,6 +1,6 @@
 package com.spring.Company.Repo;
 
-import com.spring.Company.DTO.UserProjection;
+import com.spring.Company.DTO.UserDto;
 import com.spring.Company.Model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,8 +15,8 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("SELECT u.id AS id, u.name AS name, u.title AS title, u.role AS role, " +
             "u.email AS mail, u.phone AS phone, u.level AS level, " +
-            "u.manager.id AS managerId, u.department.id AS departmentId " +
+            "u.manager.id AS managerId, u.department.id AS departmentId , u.password AS password " +
             "FROM User u WHERE u.id = :id")
-    Optional<UserProjection> findUserById(@Param("id") int id);
+    Optional<UserDto> findUserById(@Param("id") int id);
 
 }

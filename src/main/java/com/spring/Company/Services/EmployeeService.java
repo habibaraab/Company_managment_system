@@ -1,7 +1,6 @@
 package com.spring.Company.Services;
 
-import com.spring.Company.DTO.UserProjection;
-import com.spring.Company.Model.User;
+import com.spring.Company.DTO.UserDto;
 import com.spring.Company.Repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,7 @@ public class EmployeeService {
     @Autowired
     private UserRepository userRepository;
 
-    public UserProjection findUserById(int id) {
+    public UserDto findUserById(int id) {
         return userRepository.findUserById(id).orElseThrow(
                 ()-> new RuntimeException("no user with this id")
         );}
