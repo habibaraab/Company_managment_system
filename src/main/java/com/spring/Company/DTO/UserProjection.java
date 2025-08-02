@@ -2,7 +2,7 @@ package com.spring.Company.DTO;
 
 import com.spring.Company.Enum.Level;
 
-public interface UserDto {
+public interface UserProjection {
     int getId();
 
     String getName();

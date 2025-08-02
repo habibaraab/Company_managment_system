@@ -1,6 +1,7 @@
 package com.spring.Company.Services;
 
 
+import com.spring.Company.DTO.UserProjection;
 import com.spring.Company.Model.User;
 import com.spring.Company.Model.UserHistory;
 import com.spring.Company.Repo.UserHistoryRepository;

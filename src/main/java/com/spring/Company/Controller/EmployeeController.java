@@ -1,6 +1,6 @@
 package com.spring.Company.Controller;
 
-import com.spring.Company.DTO.UserDto;
+import com.spring.Company.DTO.UserProjection;
 import com.spring.Company.Services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +17,8 @@ public class EmployeeController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDto>findUserById(@PathVariable int id){
-        UserDto user = employeeService.findUserById(id);
+    public ResponseEntity<UserProjection>findUserById(@PathVariable int id){
+        UserProjection user = employeeService.findUserById(id);
         return ResponseEntity.ok(user);
     }
 }
