@@ -58,10 +58,11 @@ public class ManagerService {
         return userMapper.toUserResponseDto(savedUser);
     }
 
-    public void deleteUser(int id) {
-        User userToDelete = userRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Cannot delete: User with ID " + id + " not found."));
-        userRepository.delete(userToDelete);
+    public void deleteUser(int id){
+        if (!userRepository.existsById(id)) {
+            throw new IllegalArgumentException("User with ID " + id + " does not exist");
+        }
+        userRepository.deleteById(id);
     }
 
     public UserResponseDto updateUser(int userId, UserRequestDto requestDto) {
