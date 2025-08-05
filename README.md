@@ -2,125 +2,57 @@
 ## User-API
 # UML
 ```mermaid
-classDiagram
-class User{
--name: String
--id: long
--managerId: long
--title: String
--level: Level
--role: String
--email: String
--password: String
--phone: String
--company: String
--department: String
--location: String
--salaryNet: float
--salaryGross: float
-}
-class UserProjetion{
- <<interface>>
-+ getName(): String
-+ getId():long
-+getManagerId():long
-+getCompany():String 
-+getDepartment(): String
-}
-class Level{
-<<enumeration>>
-Fresh
-Junior
-Senior
-Lead
-}
-class UserHistory{
--userId:long
--recordId:long
--managerId:long
--title: string
--level:Leve
--role: strin
--departmentId: long
--salaryGross: float
-}
-class UserRepository{
-<<interface>>
-+getuserHistory():List<User>
-+findUserById():User
-+addUser():void
-+deleteUser():void
-+ updateUser(): void
-+findUserById():UserProjection
-}
-class EmployeeService{
-+findUserById():UserProjection
-}
-class ManagerService{
-+findUserById():User
-+addUser():void
-+deleteUser():void
-+ updateUser(): void
-+ viewEmployeeHistory():List<User>
-}
-class EmployeeController{
-+findUser():UserProjection
-+getUserHistory():List<User>
-}
-class ManagerController{
-+createUser(): User
-+ updateUser(): void
-+ deletUser(): void
-+viewEmployeeHistory(): List<User>
-}
-ManagerService o-- UserRepository
-EmployeeService o-- UserRepository
-ManagerController o-- ManagerService
-EmployeeController o-- EmployeeService
-
-
-```
-# ERD
-
-```mermaid
-erDiagram
-User {
-        long id PK
-        string name
-        long managerId FK
-        string title
-        int level
-        string role
-        string mail
-        string password
-        string phone
-        long departmentId fk
-        float salaryGross
+    COMPANY {
+        int id PK
+        varchar(255) name
+        varchar(255) description
+        varchar(255) location
     }
-    Company{
-        long id  pk
-        String name  
-        String Location
-        string description
-        }
-    Department{
-          long id pk
-          long companyId fk
-          string name
+
+    DEPARTMENT {
+        int id PK
+        varchar(255) name
+        int company_id FK
     }
-    UserHistory{
-        long id pk
-        long recordId pk
-       long managerId FK
-        string title
-        int level
-        string role
-        long departmentId fk
-        float salaryGross
-}
-User ||--o{ Department : "belongs to"
-Department ||--o{ Company : "belongs to"
-User ||--o{ User : "reports to"
-UserHistory ||--o{ User : "has"
+
+    USER {
+        int id PK
+        varchar(255) name
+        varchar(255) email UK
+        varchar(255) title
+        enum role
+        enum level
+        int department_id FK
+        int manager_id FK
+    }
+
+    TEAM {
+        int id PK
+        varchar(255) name
+        int manager_id FK
+    }
+
+    TOKEN {
+        int id PK
+        varchar(255) token UK
+        enum token_type
+        bit expired
+        bit revoked
+        int user_id FK
+    }
+
+    TEAM_MEMBERS {
+        int team_id PK, FK
+        int user_id PK, FK
+    }
+
+    COMPANY ||--o{ DEPARTMENT : "has"
+    DEPARTMENT ||--o{ USER : "contains"
+    USER }o--|| USER : "manages"
+    USER ||--o{ TEAM : "manages"
+    USER ||--o{ TOKEN : "has"
+    
+    TEAM }o--o{ TEAM_MEMBERS : "is part of"
+    USER }o--o{ TEAM_MEMBERS : "is member of"
 
 ```
