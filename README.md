@@ -1,61 +1,148 @@
 ### Company Managment System
 # UML 
 ```mermaid
-
 classDiagram
+    direction TD
+
+    ' --- Entities, DTOs, and Enums ---
+    class User {
+        -name: String
+        -id: long
+        -title: String
+        -level: Level
+        -role: Role
+        -email: String
+        -password: String
+        -phone: String
+        -salaryNet: float
+        -salaryGross: float
+    }
+    class Team {
+        -id: long
+        -name: String
+    }
+    class UserDto {
+        +name: String 
+        +id: long
+        +department: String
+    }
+    class UserProjection {
+        <<interface>>
+        +getName(): String
+        +getId(): long
+        +getManagerId(): long
+        +getCompany(): String 
+        +getDepartment(): String
+    }
+    class UserHistory {
+        -userId: long
+        -recordId: long
+        -managerId: long
+        -title: string
+        -level: Level
+        -role: Role
+        -departmentId: long
+        -salaryGross: float
+    }
+    class Level {
+        <<enumeration>>
+        Fresh
+        Junior
+        Senior
+        Lead
+    }
+    class Role {
+        <<enumeration>>
+        MANAGER
+        EMPLOYEE
+    }
+
+    ' --- Controller Layer ---
+    class ManagerController {
+        +createUser(): User
+        +updateUser(): void
+        +deletUser(): void
+        +viewEmployeeHistory(): List~User~
+    }
+    class EmployeeController {
+        +findUser(): UserProjection
+        +getUserHistory(): List~User~
+    }
     class TeamController {
-        +assignManagerToTeam(): TeamDto
-        +createTeam(): TeamDto
-        +getTeamById(): TeamDto
-    }
-    class UserController {
-        +getUserById(): UserResponseDto
+        +assignManager(): void
+        +addMember(): void
+        +getTeamById(): Team
+        +getAllTeams(): List~Team~
+        +removeMember(): void
     }
 
+    ' --- Service Layer ---
+    class ManagerService {
+        +findUserById(): User
+        +addUser(): void
+        +deleteUser(): void
+        +updateUser(): void
+        +viewEmployeeHistory(): List~User~
+    }
+    class EmployeeService {
+        +findUserById(): UserProjection
+    }
     class TeamService {
-        +assignManagerToTeam(): TeamDto
-        +createTeam(): TeamDto
-    }
-    class UserService {
-         +getUserById(): UserResponseDto
-    }
-
-    class JpaRepository {
-        <<interface>>
-        +findById()
-        +findAll()
-        +save()
-    }
-    class TeamRepository {
-        <<interface>>
-        +findByManagerId(): List
-    }
-    class UserRepository {
-        <<interface>>
-        +findUserById(): Optional
-    }
-    
-    class TeamMapper {
-        <<interface>>
-        +teamToTeamDto(): TeamDto
-    }
-    class UserMapper {
-        <<interface>>
-        +toUserResponseDto(): UserResponseDto
+        +assignManager(): void
+        +addMember(): void
+        +getTeamById(): Team
+        +getAllTeams(): List~Team~
+        +removeMember(): void
     }
 
+    ' --- DAO / Repository Layer ---
+    class UserDao {
+        <<interface>>
+        +getuserHistory(): List~User~
+    }
+    class ManagerDao {
+        <<interface>>
+        +findUserById(): User
+        +addUser(): void
+        +deleteUser(): void
+        +updateUser(): void
+        +viewEmployeeHistory(): List~User~
+    }
+    class EmployeeDao {
+        <<interface>>
+        +findUserById(): UserProjection
+    }
+    class TeamDao {
+        <<interface>>
+        +createTeam(): void 
+        +assignManager(): void
+        +addMember(): void
+        +getTeamById(): Team
+        +removeMemberFromTeam(): void
+        +getAllTeams(): List~Team~
+    }
+
+    ' --- Relationships ---
+    ' Inheritance
+    UserDao <|-- EmployeeDao
+    UserDao <|-- ManagerDao
+
+    ' Controller -> Service Dependencies
+    ManagerController o-- ManagerService
+    EmployeeController o-- EmployeeService
     TeamController o-- TeamService
-    UserController o-- UserService
+
+    ' Service -> DAO/Repository Dependencies
+    ManagerService o-- ManagerDao
+    EmployeeService o-- EmployeeDao
+    TeamService o-- TeamDao
     
-    TeamService o-- TeamRepository
-    TeamService o-- UserRepository
-    UserService o-- UserRepository
-
-    TeamService o-- TeamMapper
-    UserService o-- UserMapper
-
-    JpaRepository <|-- TeamRepository
-    JpaRepository <|-- UserRepository
+    ' Other relationships
+    User ..> Level
+    User ..> Role
+    UserHistory ..> Level
+    UserHistory ..> Role
+    
 ```
 
 # ERD
