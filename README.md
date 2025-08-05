@@ -2,61 +2,56 @@
 # UML 
 ```mermaid
 
- classDiagram
+classDiagram
     direction TD
 
-    subgraph "Controller Layer"
-        class TeamController {
-            +assignManagerToTeam(teamId, managerId): TeamDto
-            +createTeam(teamDto): TeamDto
-            +getTeamById(teamId): TeamDto
-        }
-        class UserController {
-            +getUserById(id): UserResponseDto
-        }
-    end
+    ' --- Controller Layer ---
+    class TeamController {
+        +assignManagerToTeam(teamId, managerId): TeamDto
+        +createTeam(teamDto): TeamDto
+        +getTeamById(teamId): TeamDto
+    }
+    class UserController {
+        +getUserById(id): UserResponseDto
+    }
 
-    subgraph "Service Layer"
-        class TeamService {
-            +assignManagerToTeam(teamId, managerId): TeamDto
-            +createTeam(teamDto): TeamDto
-        }
-        class UserService {
-             +getUserById(id): UserResponseDto
-        }
-    end
+    ' --- Service Layer ---
+    class TeamService {
+        +assignManagerToTeam(teamId, managerId): TeamDto
+        +createTeam(teamDto): TeamDto
+    }
+    class UserService {
+        +getUserById(id): UserResponseDto
+    }
 
-    subgraph "Repository (DAO) Layer"
-        class JpaRepository {
-            <<interface>>
-            +findById(ID id)
-            +findAll()
-            +save(S entity)
-        }
-        class TeamRepository {
-            <<interface>>
-            +findByManagerId(int managerId): List
-        }
-        class UserRepository {
-            <<interface>>
-            +findUserById(int id): Optional
-        }
-    end
+    ' --- Repository (DAO) Layer ---
+    class JpaRepository {
+        <<interface>>
+        +findById(ID id)
+        +findAll()
+        +save(S entity)
+    }
+    class TeamRepository {
+        <<interface>>
+        +findByManagerId(int managerId): List
+    }
+    class UserRepository {
+        <<interface>>
+        +findUserById(int id): Optional
+    }
     
-    subgraph "Mapper Layer"
-        class TeamMapper {
-            <<interface>>
-            +teamToTeamDto(Team team): TeamDto
-        }
-        class UserMapper {
-            <<interface>>
-            +toUserResponseDto(User user): UserResponseDto
-        }
-    end
+    ' --- Mapper Layer ---
+    class TeamMapper {
+        <<interface>>
+        +teamToTeamDto(Team team): TeamDto
+    }
+    class UserMapper {
+        <<interface>>
+        +toUserResponseDto(User user): UserResponseDto
+    }
 
 
     ' --- Relationships ---
-
     ' Controller depends on Service
     TeamController o-- TeamService
     UserController o-- UserService
