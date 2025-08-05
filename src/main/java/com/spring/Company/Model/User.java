@@ -6,6 +6,7 @@ import com.spring.Company.Enum.Level;
 import com.spring.Company.Enum.Role;
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +20,7 @@ import java.util.Objects;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements UserDetails {
 
@@ -77,16 +79,5 @@ public class User implements UserDetails {
         return calculateNetSalary(salaryGross);
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        User user = (User) obj;
-        return id== user.id;
-    }
 
 }

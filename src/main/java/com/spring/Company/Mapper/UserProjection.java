@@ -17,8 +17,6 @@ public interface UserProjection {
 
     Level getLevel();
 
-    Integer getManagerId();
-
     Integer getDepartmentId();
 
 }
