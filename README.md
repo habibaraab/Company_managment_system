@@ -1,7 +1,8 @@
 ### Company Managment System
 # UML 
 ```mermaid
-classDiagram
+
+ classDiagram
     direction TD
 
     subgraph "Controller Layer"
@@ -34,11 +35,11 @@ classDiagram
         }
         class TeamRepository {
             <<interface>>
-            +findByManagerId(int managerId): List~Team~
+            +findByManagerId(int managerId): List
         }
         class UserRepository {
             <<interface>>
-            +findUserById(int id): Optional~User~
+            +findUserById(int id): Optional
         }
     end
     
@@ -62,7 +63,7 @@ classDiagram
 
     ' Service depends on Repository
     TeamService o-- TeamRepository
-    TeamService o-- UserRepository ' As seen in your code
+    TeamService o-- UserRepository
     UserService o-- UserRepository
 
     ' Service depends on Mapper
