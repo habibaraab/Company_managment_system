@@ -2,12 +2,10 @@
 # UML 
 ```mermaid
 classDiagram
-    direction TD
-
-    ' --- Entities, DTOs, and Enums ---
     class User {
         -name: String
         -id: long
+        -managerId: long
         -title: String
         -level: Level
         -role: Role
@@ -19,7 +17,8 @@ classDiagram
     }
     class Team {
         -id: long
-        -name: String
+        -managerId: long
+        -members: List
     }
     class UserDto {
         +name: String 
@@ -31,7 +30,7 @@ classDiagram
         +getName(): String
         +getId(): long
         +getManagerId(): long
-        +getCompany(): String 
+        +getCompany(): String
         +getDepartment(): String
     }
     class UserHistory {
@@ -57,32 +56,30 @@ classDiagram
         EMPLOYEE
     }
 
-    ' --- Controller Layer ---
     class ManagerController {
         +createUser(): User
         +updateUser(): void
         +deletUser(): void
-        +viewEmployeeHistory(): List~User~
+        +viewEmployeeHistory(): List<User>
     }
     class EmployeeController {
         +findUser(): UserProjection
-        +getUserHistory(): List~User~
+        +getUserHistory(): List<User>
     }
     class TeamController {
         +assignManager(): void
         +addMember(): void
         +getTeamById(): Team
-        +getAllTeams(): List~Team~
+        +getAllTeams(): List<Team>
         +removeMember(): void
     }
 
-    ' --- Service Layer ---
     class ManagerService {
         +findUserById(): User
         +addUser(): void
         +deleteUser(): void
         +updateUser(): void
-        +viewEmployeeHistory(): List~User~
+        +viewEmployeeHistory(): List<User>
     }
     class EmployeeService {
         +findUserById(): UserProjection
@@ -91,14 +88,12 @@ classDiagram
         +assignManager(): void
         +addMember(): void
         +getTeamById(): Team
-        +getAllTeams(): List~Team~
-        +removeMember(): void
+        +getAllTeams(): List<Team>
     }
 
-    ' --- DAO / Repository Layer ---
     class UserDao {
         <<interface>>
-        +getuserHistory(): List~User~
+        +getuserHistory(): List<User>
     }
     class ManagerDao {
         <<interface>>
@@ -106,7 +101,7 @@ classDiagram
         +addUser(): void
         +deleteUser(): void
         +updateUser(): void
-        +viewEmployeeHistory(): List~User~
+        +viewEmployeeHistory(): List<User>
     }
     class EmployeeDao {
         <<interface>>
@@ -118,30 +113,19 @@ classDiagram
         +assignManager(): void
         +addMember(): void
         +getTeamById(): Team
-        +removeMemberFromTeam(): void
-        +getAllTeams(): List~Team~
+        +getAllTeams(): List<Team>
     }
 
-    ' --- Relationships ---
-    ' Inheritance
     UserDao <|-- EmployeeDao
     UserDao <|-- ManagerDao
-
-    ' Controller -> Service Dependencies
+    
     ManagerController o-- ManagerService
     EmployeeController o-- EmployeeService
     TeamController o-- TeamService
-
-    ' Service -> DAO/Repository Dependencies
+    
     ManagerService o-- ManagerDao
     EmployeeService o-- EmployeeDao
     TeamService o-- TeamDao
-    
-    ' Other relationships
-    User ..> Level
-    User ..> Role
-    UserHistory ..> Level
-    UserHistory ..> Role
     
 ```
 
