@@ -3,72 +3,59 @@
 ```mermaid
 
 classDiagram
-    direction TD
-
-    ' --- Controller Layer ---
     class TeamController {
-        +assignManagerToTeam(teamId, managerId): TeamDto
-        +createTeam(teamDto): TeamDto
-        +getTeamById(teamId): TeamDto
+        +assignManagerToTeam(): TeamDto
+        +createTeam(): TeamDto
+        +getTeamById(): TeamDto
     }
     class UserController {
-        +getUserById(id): UserResponseDto
+        +getUserById(): UserResponseDto
     }
 
-    ' --- Service Layer ---
     class TeamService {
-        +assignManagerToTeam(teamId, managerId): TeamDto
-        +createTeam(teamDto): TeamDto
+        +assignManagerToTeam(): TeamDto
+        +createTeam(): TeamDto
     }
     class UserService {
-        +getUserById(id): UserResponseDto
+         +getUserById(): UserResponseDto
     }
 
-    ' --- Repository (DAO) Layer ---
     class JpaRepository {
         <<interface>>
-        +findById(ID id)
+        +findById()
         +findAll()
-        +save(S entity)
+        +save()
     }
     class TeamRepository {
         <<interface>>
-        +findByManagerId(int managerId): List
+        +findByManagerId(): List
     }
     class UserRepository {
         <<interface>>
-        +findUserById(int id): Optional
+        +findUserById(): Optional
     }
     
-    ' --- Mapper Layer ---
     class TeamMapper {
         <<interface>>
-        +teamToTeamDto(Team team): TeamDto
+        +teamToTeamDto(): TeamDto
     }
     class UserMapper {
         <<interface>>
-        +toUserResponseDto(User user): UserResponseDto
+        +toUserResponseDto(): UserResponseDto
     }
 
-
-    ' --- Relationships ---
-    ' Controller depends on Service
     TeamController o-- TeamService
     UserController o-- UserService
-
-    ' Service depends on Repository
+    
     TeamService o-- TeamRepository
     TeamService o-- UserRepository
     UserService o-- UserRepository
 
-    ' Service depends on Mapper
     TeamService o-- TeamMapper
     UserService o-- UserMapper
 
-    ' Repository Inheritance from Spring Data JPA
     JpaRepository <|-- TeamRepository
     JpaRepository <|-- UserRepository
-
 ```
 
 # ERD
