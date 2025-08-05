@@ -1,90 +1,77 @@
 ### Company Managment System
 # UML 
 ```mermaid
+classDiagram
+    direction LR
 
-class Company {
-  -id: int
-  -name: String
-  -description: String
-  -location: String
-}
+    class Company {
+        -int id
+        -String name
+        -String description
+        -String location
+    }
 
-class Department {
-  -id: int
-  -name: String
-}
+    class Department {
+        -int id
+        -String name
+    }
 
-class User {
-  -id: int
-  -name: String
-  -email: String
-  -password: String
-  -phone: String
-  -title: String
-  -salaryGross: Float
-  -level: Level
-  -role: Role
-}
+    class User {
+        -int id
+        -String name
+        -String email
+        -String password
+        -String title
+        -Level level
+        -Role role
+    }
 
-enum Level {
-  FRESH
-  JUNIOR
-  LEAD
-  SENIOR
-}
+    class Team {
+        -int id
+        -String name
+    }
 
-enum Role {
-  COMPANY_MANAGER
-  EMPLOYEE
-  MANAGER
-}
+    class Token {
+        -int id
+        -String token
+        -TokenType tokenType
+        -boolean expired
+        -boolean revoked
+    }
 
-class Team {
-  -id: int
-  -name: String
-}
+    class Level {
+        <<enumeration>>
+        FRESH
+        JUNIOR
+        LEAD
+        SENIOR
+    }
 
-class Token {
-  -id: int
-  -token: String
-  -tokenType: TokenType
-  -expired: boolean
-  -revoked: boolean
-}
+    class Role {
+        <<enumeration>>
+        COMPANY_MANAGER
+        EMPLOYEE
+        MANAGER
+    }
+    
+    class TokenType {
+        <<enumeration>>
+        BEARER
+        REFRESH
+    }
 
-enum TokenType {
-  BEARER
-  REFRESH
-}
-
-
-' Define Relationships
-' ====================
-
-' Company <--> Department
-Company "1" o-- "*" Department : "has"
-
-' Department <--> User
-Department "1" o-- "*" User : "contains"
-
-' User <--> User (Self-referencing for manager)
-User "1" o-- "*" User : "manages >"
-
-' User <--> Team (Manager of Team)
-User "1" o-- "*" Team : "manages"
-
-' User <--> Token
-User "1" o-- "*" Token : "has"
-
-' Team <--> User (Many-to-Many for members)
-Team "1" *-- "*" User : "< has members"
-
-
-' Connect Enums to User class
-User .> Level
-User .> Role
-Token .> TokenType
-
+    ' --- Relationships ---
+    Company "1" -- "0..*" Department : has
+    Department "1" -- "0..*" User : contains
+    User "1" o-- "0..*" User : manages
+    User "1" -- "0..*" Token : has
+    Team "0..*" -- "1" User : managed by
+    Team "*" -- "*" User : has members
+    
+    ' --- Enum Usage ---
+    User ..> Level
+    User ..> Role
+    Token ..> TokenType
 ```
 
 # ERD
