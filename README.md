@@ -2,8 +2,6 @@
 # UML 
 ```mermaid
 classDiagram
-    direction LR
-
     class Company {
         -int id
         -String name
