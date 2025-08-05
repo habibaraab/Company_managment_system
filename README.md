@@ -1,58 +1,15 @@
 ###                  Company Managment System
 ## User-API
 # UML
-```mermaid
-    COMPANY {
-        int id PK
-        varchar(255) name
-        varchar(255) description
-        varchar(255) location
-    }
-
-    DEPARTMENT {
-        int id PK
-        varchar(255) name
-        int company_id FK
-    }
-
+erDiagram
     USER {
         int id PK
-        varchar(255) name
-        varchar(255) email UK
-        varchar(255) title
-        enum role
-        enum level
-        int department_id FK
-        int manager_id FK
+        string name
+        string email
     }
-
     TEAM {
         int id PK
-        varchar(255) name
+        string name
         int manager_id FK
     }
-
-    TOKEN {
-        int id PK
-        varchar(255) token UK
-        enum token_type
-        bit expired
-        bit revoked
-        int user_id FK
-    }
-
-    TEAM_MEMBERS {
-        int team_id PK, FK
-        int user_id PK, FK
-    }
-
-    COMPANY ||--o{ DEPARTMENT : "has"
-    DEPARTMENT ||--o{ USER : "contains"
-    USER }o--|| USER : "manages"
     USER ||--o{ TEAM : "manages"
-    USER ||--o{ TOKEN : "has"
-    
-    TEAM }o--o{ TEAM_MEMBERS : "is part of"
-    USER }o--o{ TEAM_MEMBERS : "is member of"
-
-```
