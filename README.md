@@ -2,74 +2,77 @@
 # UML 
 ```mermaid
 classDiagram
-    class Company {
-        -int id
-        -String name
-        -String description
-        -String location
-    }
+    direction TD
 
-    class Department {
-        -int id
-        -String name
-    }
+    subgraph "Controller Layer"
+        class TeamController {
+            +assignManagerToTeam(teamId, managerId): TeamDto
+            +createTeam(teamDto): TeamDto
+            +getTeamById(teamId): TeamDto
+        }
+        class UserController {
+            +getUserById(id): UserResponseDto
+        }
+    end
 
-    class User {
-        -int id
-        -String name
-        -String email
-        -String password
-        -String title
-        -Level level
-        -Role role
-    }
+    subgraph "Service Layer"
+        class TeamService {
+            +assignManagerToTeam(teamId, managerId): TeamDto
+            +createTeam(teamDto): TeamDto
+        }
+        class UserService {
+             +getUserById(id): UserResponseDto
+        }
+    end
 
-    class Team {
-        -int id
-        -String name
-    }
-
-    class Token {
-        -int id
-        -String token
-        -TokenType tokenType
-        -boolean expired
-        -boolean revoked
-    }
-
-    class Level {
-        <<enumeration>>
-        FRESH
-        JUNIOR
-        LEAD
-        SENIOR
-    }
-
-    class Role {
-        <<enumeration>>
-        COMPANY_MANAGER
-        EMPLOYEE
-        MANAGER
-    }
+    subgraph "Repository (DAO) Layer"
+        class JpaRepository {
+            <<interface>>
+            +findById(ID id)
+            +findAll()
+            +save(S entity)
+        }
+        class TeamRepository {
+            <<interface>>
+            +findByManagerId(int managerId): List~Team~
+        }
+        class UserRepository {
+            <<interface>>
+            +findUserById(int id): Optional~User~
+        }
+    end
     
-    class TokenType {
-        <<enumeration>>
-        BEARER
-        REFRESH
-    }
+    subgraph "Mapper Layer"
+        class TeamMapper {
+            <<interface>>
+            +teamToTeamDto(Team team): TeamDto
+        }
+        class UserMapper {
+            <<interface>>
+            +toUserResponseDto(User user): UserResponseDto
+        }
+    end
+
 
     ' --- Relationships ---
-    Company "1" -- "0..*" Department : has
-    Department "1" -- "0..*" User : contains
-    User "1" o-- "0..*" User : manages
-    User "1" -- "0..*" Token : has
-    Team "0..*" -- "1" User : managed by
-    Team "*" -- "*" User : has members
-    
-    ' --- Enum Usage ---
-    User ..> Level
-    User ..> Role
-    Token ..> TokenType
+
+    ' Controller depends on Service
+    TeamController o-- TeamService
+    UserController o-- UserService
+
+    ' Service depends on Repository
+    TeamService o-- TeamRepository
+    TeamService o-- UserRepository ' As seen in your code
+    UserService o-- UserRepository
+
+    ' Service depends on Mapper
+    TeamService o-- TeamMapper
+    UserService o-- UserMapper
+
+    ' Repository Inheritance from Spring Data JPA
+    JpaRepository <|-- TeamRepository
+    JpaRepository <|-- UserRepository
+
 ```
 
 # ERD
