@@ -3,15 +3,11 @@ package com.spring.Company.Controller;
 
 import com.spring.Company.DTO.UserRequestDto;
 import com.spring.Company.DTO.UserResponseDto;
-import com.spring.Company.Model.User;
 import com.spring.Company.Services.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/manager")

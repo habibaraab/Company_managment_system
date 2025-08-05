@@ -48,6 +48,7 @@ public class SecurityConfig {
                         "/swagger-ui.html").permitAll()
                 .requestMatchers("/manager/**").hasRole("MANAGER")
                 .requestMatchers("/employee/**").hasRole("EMPLOYEE")
+                .requestMatchers("/team/**").hasRole("MANAGER")
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

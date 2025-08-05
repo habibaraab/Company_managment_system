@@ -2,10 +2,8 @@ package com.spring.Company.Model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.engine.profile.Fetch;
 
 @Entity
 @Data
