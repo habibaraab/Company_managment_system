@@ -2,6 +2,7 @@ package com.spring.Company.Model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.spring.Company.Enum.Level;
 import com.spring.Company.Enum.Role;
 import jakarta.persistence.*;
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Setter
@@ -22,7 +24,6 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User implements UserDetails {
-
     @Override
     public String getUsername() {
         return email;

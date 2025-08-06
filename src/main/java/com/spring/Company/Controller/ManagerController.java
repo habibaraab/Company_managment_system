@@ -4,6 +4,7 @@ package com.spring.Company.Controller;
 import com.spring.Company.DTO.UserRequestDto;
 import com.spring.Company.DTO.UserResponseDto;
 import com.spring.Company.Services.ManagerService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +12,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/manager")
+@RequiredArgsConstructor
 @CrossOrigin(origins="*")
 public class ManagerController {
 
-    @Autowired
-    private ManagerService managerService;
+    private final ManagerService managerService;
 
     @GetMapping("/user/{id}")
     public ResponseEntity<UserResponseDto> getUser(@PathVariable int id) {

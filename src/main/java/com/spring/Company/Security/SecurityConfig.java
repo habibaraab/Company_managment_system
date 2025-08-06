@@ -1,5 +1,6 @@
 package com.spring.Company.Security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,13 +18,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
 
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-    @Autowired
-    private JwtAuthorizationFilter jwtAuthorizationFilter;
+    private final  UserDetailsService userDetailsService;
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
 
     @Bean
@@ -39,25 +39,34 @@ public class SecurityConfig {
         return authenticationProvider;
     }
 
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .requestMatchers("/auth/**", "/v3/api-docs/**",
-                        "/swagger-ui/**",
-                        "/swagger-ui.html").permitAll()
-                .requestMatchers("/manager/**").hasRole("MANAGER")
-                .requestMatchers("/employee/**").hasRole("EMPLOYEE")
-                .requestMatchers("/team/**").hasRole("MANAGER")
-                .anyRequest().authenticated()
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(
+                                "/auth/**",
+                                "/v3/api-docs/**",   // للسماح بملف توثيق OpenAPI
+                                "/swagger-ui/**"     // للسماح بواجهة Swagger UI
+                        ).permitAll()
+
+                        .requestMatchers("/manager/**").hasRole("MANAGER")
+                        .requestMatchers("/team/**").hasRole("MANAGER")
+                        .requestMatchers("/employee/**").hasRole("EMPLOYEE")
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class); // add jwt filter
+
+                .addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
+
+
+
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {

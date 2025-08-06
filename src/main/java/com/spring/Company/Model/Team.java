@@ -1,5 +1,6 @@
 package com.spring.Company.Model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Builder
 public class Team {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -28,6 +28,6 @@ public class Team {
             name = "team_members",
             joinColumns = @JoinColumn(name = "team_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-        private Set<User> members;
+    private Set<User> members;
 
 }

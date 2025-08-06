@@ -4,6 +4,7 @@ import com.spring.Company.DTO.TeamDto;
 import com.spring.Company.DTO.UserResponseDto;
 import com.spring.Company.Services.ManagerService;
 import com.spring.Company.Services.TeamService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/team")
+@RequiredArgsConstructor
 public class TeamController {
-    @Autowired
-    private TeamService teamService;
-    @Autowired
-    private ManagerService managerService   ;
+    private  final  TeamService teamService;
+    private final  ManagerService managerService   ;
 
     @GetMapping("/user/{id}")
     public ResponseEntity<UserResponseDto> getUser(@PathVariable int id) {

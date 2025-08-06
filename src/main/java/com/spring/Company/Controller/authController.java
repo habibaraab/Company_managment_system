@@ -4,6 +4,7 @@ import com.spring.Company.DTO.AuthenticationResponse;
 import com.spring.Company.DTO.LoginRequest;
 import com.spring.Company.DTO.UserRequestDto;
 import com.spring.Company.Services.AuthService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -14,10 +15,11 @@ import java.util.Map;
 @Controller
 @RequestMapping("/auth")
 @CrossOrigin(origins="*")
+@RequiredArgsConstructor
 public class authController {
 
-    @Autowired
-    private AuthService authService;
+
+    private final AuthService authService;
 
 
     @PostMapping("/login")
